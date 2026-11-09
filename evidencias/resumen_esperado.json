@@ -1,0 +1,11 @@
+{
+  "moneda": "MXN",
+  "ventas": 10,
+  "unidades": 21,
+  "ingresos": "2105.00",
+  "productos": [
+    {"producto": "Café", "unidades": 8, "ingresos": "960.00"},
+    {"producto": "Chocolate", "unidades": 7, "ingresos": "665.00"},
+    {"producto": "Té", "unidades": 6, "ingresos": "480.00"}
+  ]
+}

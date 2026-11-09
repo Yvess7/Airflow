@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.airflow/
+logs/
+output/*
+!output/.gitkeep
+*.egg-info/
+.pytest_cache/

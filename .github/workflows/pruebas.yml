@@ -1,0 +1,39 @@
+name: Pruebas del ejemplo Airflow
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probar validación y cálculos
+        run: python -m unittest discover -s tests -v
+
+  airflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ejecutar el DAG real y comprobar sus archivos
+        run: |
+          mkdir -p output
+          chmod 777 output
+          docker run --rm \
+            -v "$PWD/dags:/opt/airflow/dags:ro" \
+            -v "$PWD/data:/opt/airflow/data:ro" \
+            -v "$PWD/scripts:/opt/airflow/scripts:ro" \
+            -v "$PWD/evidencias:/opt/airflow/evidencias:ro" \
+            -v "$PWD/output:/opt/airflow/output" \
+            apache/airflow:3.3.2-python3.12 \
+            bash /opt/airflow/scripts/probar_dag.sh
+      - name: Conservar los resultados de la ejecución
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultados-ventas
+          path: output/
